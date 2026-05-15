@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NDUASHEY MAINA | Developer & DevOps Engineer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes matrixRain {
+            0% { transform: translateY(-100%); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        @keyframes glitch {
+            0%, 100% { text-shadow: 0 0 10px #00ff00, -2px -2px #ff00ff, 2px 2px #00ffff; }
+            20% { text-shadow: -2px 0 10px #00ff00, 2px -2px #ff00ff, -2px 2px #00ffff; }
+            40% { text-shadow: 2px -2px 10px #00ff00, -2px 2px #ff00ff, 2px 0 #00ffff; }
+            60% { text-shadow: -2px 2px 10px #00ff00, 2px 0 #ff00ff, -2px -2px #00ffff; }
+            80% { text-shadow: 2px 2px 10px #00ff00, -2px 0 #ff00ff, 2px -2px #00ffff; }
+        }
+
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
+            20%, 24%, 55% { text-shadow: 0 0 2px #00ff00; }
+        }
+
+        @keyframes scanlines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
+        }
+
+        @keyframes boxPulse {
+            0%, 100% { border-color: #00ff00; box-shadow: 0 0 5px rgba(0, 255, 0, 0.3); }
+            50% { border-color: #00cc00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.6); }
+        }
+
+        @keyframes fadeInGlitch {
+            0% { opacity: 0; transform: translate(-2px, 2px); }
+            100% { opacity: 1; transform: translate(0, 0); }
+        }
+
+        body {
+            background: #000000;
+            color: #00ff00;
+            font-family: 'Courier New', 'Courier', monospace;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 255, 0, 0.03) 0px,
+                    rgba(0, 255, 0, 0.03) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+            pointer-events: none;
+            z-index: 1;
+            animation: scanlines 0.15s linear infinite;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Matrix rain effect in background */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.05;
+        }
+
+        .matrix-char {
+            position: absolute;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInGlitch 1s ease-out;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            animation: glitch 2s infinite;
+            letter-spacing: 3px;
+            font-weight: 900;
+        }
+
+        .title {
+            font-size: 1.5em;
+            color: #00cccc;
+            margin-bottom: 20px;
+            animation: flicker 3s infinite;
+            letter-spacing: 2px;
+        }
+
+        /* Grid layout */
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Box styling */
+        .box {
+            border: 2px solid #00ff00;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: rgba(0, 255, 0, 0.02);
+            animation: boxPulse 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        .box::before {
+            content: '█';
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            color: #00ff00;
+            font-size: 0.8em;
+        }
+
+        .box::after {
+            content: '█';
+            position: absolute;
+            bottom: -10px;
+            right: 10px;
+            color: #00ff00;
+            font-size: 0.8em;
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 1px dashed #00ff00;
+            padding-bottom: 10px;
+            animation: flicker 4s infinite;
+        }
+
+        /* Contact box */
+        .contact-box {
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            background: rgba(255, 0, 255, 0.02);
+            margin-bottom: 20px;
+            animation: boxPulse 2.5s ease-in-out infinite;
+        }
+
+        .contact-item {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-icon {
+            color: #ffff00;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .contact-item a {
+            color: #00ffff;
+            text-decoration: none;
+            border-bottom: 1px solid #00ffff;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item a:hover {
+            color: #ff00ff;
+            border-bottom: 1px solid #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        /* Content sections */
+        .content {
+            flex: 2;
+        }
+
+        .sidebar {
+            flex: 1;
+        }
+
+        h3 {
+            color: #ffff00;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h4 {
+            color: #00cccc;
+            margin: 15px 0 5px 0;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .date {
+            color: #ffff00;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+
+        ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #ff00ff;
+            animation: flicker 2s infinite;
+        }
+
+        /* Skills section */
+        .skills-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .skill-tag {
+            border: 1px solid #00ff00;
+            padding: 8px 12px;
+            text-align: center;
+            background: rgba(0, 255, 0, 0.05);
+            color: #00ff00;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .skill-tag:hover {
+            background: rgba(0, 255, 0, 0.2);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            text-shadow: 0 0 5px #00ff00;
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px dashed #00ff00;
+            font-size: 0.9em;
+            color: #00cccc;
+            animation: flicker 5s infinite;
+        }
+
+        .footer-text {
+            letter-spacing: 1px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .title {
+                font-size: 1.2em;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Links */
+        a {
+            color: #00ff00;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            animation: flicker 0.8s infinite;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #00ff00, transparent);
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix rain background -->
+    <div class="matrix-bg" id="matrixBg"></div>
+
+    <!-- Main content -->
+    <div class="container">
+        <header>
+            <h1>NDUASHEY MAINA</h1>
+            <div class="title">> DEVELOPER & DEVOPS ENGINEER _</div>
+            <div style="color: #00cccc; font-size: 0.9em; letter-spacing: 2px;">
+                [ SYSTEM INITIALIZED ] [ STATUS: ONLINE ] [ CLEARANCE: ACTIVE ]
+            </div>
+        </header>
+
+        <div class="divider"></div>
+
+        <!-- Main Grid -->
+        <div class="grid">
+            <!-- Left Content -->
+            <div class="content">
+                <!-- Summary -->
+                <div class="box">
+                    <div class="section-title">► SUMMARY_PROTOCOL</div>
+                    <p>
+                        Innovative Developer experience in software development and DevOps practices.
+                        Achieved consistent delivery of efficient task completion through problem solving
+                        and teamwork in fast-paced environments. Focused on continuous learning and
+                        improvement to develop scalable solutions.
+                    </p>
+                </div>
+
+                <!-- Experience -->
+                <div class="box">
+                    <div class="section-title">► EXPERIENCE_LOG</div>
+                    
+                    <h4>
+                        <span style="color: #ff00ff;">▲</span> Developer & DevOps Engineer
+                    </h4>
+                    <div class="date">Interswitch Group | February 2025 - Current</div>
+                    <ul>
+                        <li>Developed software solutions utilizing agile methodologies and modern development frameworks</li>
+                        <li>DevOps pipeline automation and infrastructure management</li>
+                        <li>Collaborated with cross-functional teams to gather requirements and design user-centered applications</li>
+                        <li>Conducted code reviews ensuring quality and adherence to coding standards</li>
+                        <li>Debugged and resolved software defects promptly to enhance performance</li>
+                        <li>Implemented user interface designs that prioritized usability and accessibility</li>
+                        <li>Assisted in API integration for seamless data exchange between systems</li>
+                        <li>Established and promoted best practices for coding standards, fostering a culture of quality within the team</li>
+                        <li>Set up monitoring tools like Grafana to track performance metrics</li>
+                        <li>Documented technical specifications and user guides for future reference</li>
+                    </ul>
+
+                    <h4>
+                        <span style="color: #ff00ff;">▲</span> Volunteer Staff
+                    </h4>
+                    <div class="date">Ruiru Childrens Home | Ruiru, Kiambu | May 2023 - August 2023</div>
+                    <ul>
+                        <li>Supported daily care routines for children at the facility</li>
+                        <li>Coordinated recreational activities that enhanced social skills and teamwork among children</li>
+                        <li>Built trust and positive relationships with children through consistent engagement and support</li>
+                        <li>Migrated computer lab systems to Linux, implementing user roles, permissions and network sharing features</li>
+                    </ul>
+                </div>
+
+                <!-- Education -->
+                <div class="box">
+                    <div class="section-title">► EDUCATION_MATRIX</div>
+                    <h4>Bachelor's degree</h4>
+                    <p>Information Systems & Technology, Computer Systems Networking and Telecommunications</p>
+                    <div class="date">United States International University - Africa, Nairobi, Kenya | September 2025</div>
+                </div>
+
+                <!-- Websites -->
+                <div class="box">
+                    <div class="section-title">► EXTERNAL_LINKS</div>
+                    <ul>
+                        <li><a href="https://www.linkedin.com/in/nduasheymaim-01693834I" target="_blank">LinkedIn Profile</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="sidebar">
+                <!-- Contact -->
+                <div class="contact-box">
+                    <div class="section-title">► CONTACT_INFO</div>
+                    <div class="contact-item">
+                        <span class="contact-icon">☎</span>
+                        <span>+254-715-757-709</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">✉</span>
+                        <a href="mailto:nduasheym@gmail.com">nduasheym@gmail.com</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <span>Nairobi, Kenya</span>
+                    </div>
+                </div>
+
+                <!-- Skills -->
+                <div class="box">
+                    <div class="section-title">► SKILLS_TOOLKIT</div>
+                    <div class="skills-list">
+                        <div class="skill-tag">Software Dev</div>
+                        <div class="skill-tag">Cloud Infra</div>
+                        <div class="skill-tag">API Integration</div>
+                        <div class="skill-tag">CI/CD Pipeline</div>
+                        <div class="skill-tag">Cross-functional</div>
+                        <div class="skill-tag">Version Control</div>
+                        <div class="skill-tag">DevOps</div>
+                    </div>
+                </div>
+
+                <!-- Certifications -->
+                <div class="box">
+                    <div class="section-title">► CERTIFICATIONS</div>
+                    <ul>
+                        <li>Introduction to DevOps and Site Reliability Engineering</li>
+                        <li>Introduction to Kubernetes</li>
+                        <li>Linux Essentials Certification</li>
+                    </ul>
+                </div>
+
+                <!-- Languages -->
+                <div class="box">
+                    <div class="section-title">► LANGUAGES_PROTOCOL</div>
+                    <ul>
+                        <li><span style="color: #ffff00;">Swahili</span> - Native or Bilingual</li>
+                        <li><span style="color: #ffff00;">English</span> - Native or Bilingual</li>
+                        <li><span style="color: #ffff00;">German</span> - Elementary</li>
+                        <li><span style="color: #ffff00;">French</span> - Elementary</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-text">
+                [ END OF TRANSMISSION ] | Last Updated: May 2026 | Status: <span class="loading">●●●</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Matrix rain animation script -->
+    <script>
+        const matrixBg = document.getElementById('matrixBg');
+        const chars = '日月火水木金土アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()';
+
+        function createMatrixChar() {
+            const char = document.createElement('div');
+            char.className = 'matrix-char';
+            char.textContent = chars[Math.floor(Math.random() * chars.length)];
+            
+            const x = Math.random() * window.innerWidth;
+            const duration = Math.random() * 3 + 8;
+            const delay = Math.random() * 2;
+            
+            char.style.left = x + 'px';
+            char.style.top = '-50px';
+            char.style.animation = `matrixRain ${duration}s linear ${delay}s infinite`;
+            
+            matrixBg.appendChild(char);
+            
+            setTimeout(() => char.remove(), (duration + delay) * 1000);
+        }
+
+        // Create matrix characters periodically
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                createMatrixChar();
+            }
+        }, 100);
+
+        // Initial batch
+        for (let i = 0; i < 15; i++) {
+            setTimeout(createMatrixChar, i * 100);
+        }
+    </script>
+</body>
+</html>
