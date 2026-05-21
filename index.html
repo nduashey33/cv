@@ -466,6 +466,17 @@
             .section-title { color: #000 !important; border-bottom: 1px solid #ddd !important; }
             a::after { content: " (" attr(href) ")"; color: #444; font-size: 0.9em; }
         }
+
+        /* Minimal variant for the footer button */
+        .download-btn.minimal {
+            background: transparent;
+            color: #00ff00;
+            border: 1px solid rgba(0,255,0,0.22);
+            box-shadow: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
@@ -484,7 +495,6 @@
             <h1>NDUASHEY MAINA</h1>
             <div style="display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;">
                 <div class="title">> DEVELOPER & DEVOPS ENGINEER _</div>
-                <button id="downloadPdfBtn" class="download-btn" title="Download a PDF copy">Download PDF</button>
             </div>
             <div style="color: #00cccc; font-size: 0.9em; letter-spacing: 2px;">
                 [ SYSTEM INITIALIZED ] [ STATUS: ONLINE ] [ CLEARANCE: ACTIVE ]
@@ -609,6 +619,10 @@
                     </ul>
                 </div>
             </div>
+        </div>
+
+        <div style="text-align:center; margin: 18px 0 6px;">
+            <button id="downloadPdfBtn" class="download-btn minimal" title="Download a PDF copy">Download PDF</button>
         </div>
 
         <div class="divider"></div>
@@ -736,6 +750,13 @@
         initRevealAnimations();
         initCursorGlow();
         initHoverPopups();
+
+        const downloadBtn = document.getElementById('downloadPdfBtn');
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', () => {
+                window.print();
+            });
+        }
     </script>
 </body>
 </html>
